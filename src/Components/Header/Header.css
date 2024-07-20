@@ -1,0 +1,64 @@
+/* top_nav_bar */
+.top_nav_bar {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #233142;          
+}
+.top_nav_bar a {
+  text-decoration: none;
+  display: block;
+  padding: 1em;
+  color: white;
+  font-family: inherit; /* Ensure the same font family */
+  font-size: 16px; /* Ensure the same font size */
+}
+.top_nav_bar a:hover {
+  background: #455d7a;
+}
+
+.logoutButton {
+  background-color: #233142;  /* Match header link background color */
+  color: white;  /* Match header link text color */
+  padding: 1em; /* Match padding with other links */
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; /* Match font size */
+  cursor: pointer;
+  border-radius: 0; /* Match border radius with other links */
+  font-family: inherit; /* Ensure the same font family */
+}
+
+.logoutButton:hover {
+  background-color: #455d7a;  /* Match header hover background color */
+}
+
+@media all and (min-width: 801px) {
+  .left {
+    margin-right: auto;
+  }
+  .right {
+    margin-left: 0;
+  }
+}
+  
+/* style for medium screen */
+@media all and (max-width: 800px) {
+  .top_nav_bar {
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 0;
+  }
+}
+  
+/* style for small screen */
+@media all and (max-width: 600px) {
+  .top_nav_bar .large_only {
+    display: none;
+  }
+}

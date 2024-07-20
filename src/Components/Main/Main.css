@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
+.centered-title {
+    text-align: center;
+    font-family: "Nunito", sans-serif;
+    font-size: 50px;
+    margin-top: 10px;
+}
+.centered-text {
+    text-align: center;
+}
+body {
+    background: #e3e3e3;
+}
+  

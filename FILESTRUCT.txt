@@ -1,0 +1,35 @@
+notenexus/
+├── node_modules/
+├── public/
+│   ├── index.html
+├── src/
+│   ├── Components/
+│   │   ├── Authorization/
+│   │   │   ├── Login/
+│   │   │   │   ├── login.css
+│   │   │   │   ├── login.js
+│   │   │   │   ├── login.html
+│   │   │   ├── SignUp/
+│   │   │   │   ├── signup.css
+│   │   │   │   ├── signup.js
+│   │   │   │   ├── signup.html
+│   │   ├── Header/
+│   │   │   ├── Header.js
+│   │   │   ├── Header.css
+│   │   ├── Main/
+│   │   │   ├── Main.js
+│   │   │   ├── MainList.js
+│   │   │   ├── Main.css
+│   │   ├── Survey/
+│   │   │   ├── Survey.js
+│   ├── Services/
+│   │   ├── genreModel.js
+│   │   ├── songModel.js
+│   │   ├── Users.js
+│   │   ├── users.json
+│   ├── App.css
+│   ├── App.js
+│   ├── index.js
+│   ├── index.css
+│   ├── environments.js
+├── package.json

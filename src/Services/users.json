@@ -1,0 +1,16 @@
+[
+    {
+      "id": 0,
+      "firstName": "John Paul",
+      "lastName": "Llanos",
+      "email": "jllanos@nd.edu",
+      "password": "iabfisbviosvb;psob"
+    },
+    {
+      "id": 1,
+      "firstName": "Grant",
+      "lastName": "Flesher",
+      "email": "gflesher@nd.edu",
+      "password": "JAHFgoisfgksksf9238y9io"
+    }
+  ]
