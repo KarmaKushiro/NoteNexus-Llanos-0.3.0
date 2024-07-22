@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import Parse from 'parse';
 
 // From Material UI 
@@ -6,8 +7,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,15 +14,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <RouterLink to='/'>
+      <Link to="/" color="inherit">
         NoteNexus
-      </Link>{' '}
+      </Link></RouterLink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -38,6 +39,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLasttName] = useState('');
+  const navigate = useNavigate();
 
   //handles form when user hits the sighup button
   const handleSignUp = async (e) => {
@@ -51,11 +53,14 @@ const SignUp = () => {
     try {
       const result = await user.signUp();
       console.log('User signed up successfully:', result);
-      // Redirect or show a success message
+      await Parse.User.logIn(username, password); 
+      // Redirect user to survey
+      navigate('/survey');
+      window.location.reload(); // Refreshes the page
     } catch (error) {
       console.error('Error signing up:', error);
-    }
-  };
+      }
+    };
 
 
   //returns signup form
@@ -88,6 +93,8 @@ const SignUp = () => {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={firstName}
+                  onChange = {(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -98,6 +105,22 @@ const SignUp = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange = {(e) => setLastName(e.target.value)}
+
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={username}
+                  onChange = {(e) => setUsername(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -108,6 +131,8 @@ const SignUp = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange = {(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -119,9 +144,10 @@ const SignUp = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange = {(e) => setPassword(e.target.value)}
                 />
               </Grid>
-              
             </Grid>
             <Button
               type="submit"
@@ -133,7 +159,7 @@ const SignUp = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -143,8 +169,6 @@ const SignUp = () => {
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
-
-    
   );
 };
 
