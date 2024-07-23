@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Parse from 'parse';
 import { useAuth } from '../Authorization/authContext';
-import { Container, Typography, Paper, List, ListItem, ListItemText } from '@mui/material';
+import { 
+    Container, 
+    Typography, 
+    Paper, 
+    List, 
+    ListItem, 
+    ListItemText 
+} from '@mui/material';
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -15,9 +22,10 @@ const Dashboard = () => {
         // Fetch who the user is
         const query = new Parse.Query(Parse.User);
         const currentUser = await query.get(user.id);
+
         setUserInfo({ // displays the user's information
           email: currentUser.get('email'),
-          name: `${currentUser.get('firstName')} ${currentUser.get('lastName')}`,
+          name: `${currentUser.get('firstName') || ''} ${currentUser.get('lastName') || ''}`,
           createdAt: currentUser.createdAt.toDateString(),
         });
 
@@ -27,10 +35,10 @@ const Dashboard = () => {
         // List of Responses
         const inputs = [];
         if (favMusicGenre) {
-            inputs.push('Favorite Music Genre: ${favMusicGenre}');
+            inputs.push(`Favorite Music Genre: ${favMusicGenre}`);
         }
         if (customGenre && favMusicGenre === 'Other') {
-            inputs.push('Favorite Music Genre(custom): ${customGenre}');
+            inputs.push(`Favorite Music Genre(custom): ${customGenre}`);
         }
 
         setSurveyInputs(inputs);
