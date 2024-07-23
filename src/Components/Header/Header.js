@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Authorization/authContext';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import './Header.css';
 
-// This file makes the header bar at the top of the screen
 const Header = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -11,6 +16,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout(); // Ensure logout function is correctly imported and used
+      navigate('/login');
     } catch (error) {
       console.error('Error logging out', error);
     }
@@ -25,33 +31,45 @@ const Header = () => {
   };
 
   return (
-    <div>
-      {/* The large_only allows for items to vanish from nav bar when screen size shrinks
-          Would link these to other pages, but currently do not understand how to */}
-      <ul className="top_nav_bar">
-        <li className="left"><Link to="/">Home</Link></li>
-        <li className="right"><Link to="/about">About</Link></li>
-        <li className='right'><Link to="/survey" onClick={handleSurveyClick}>Survey</Link></li>
-        {/*<li class="right large_only"><a href="">Option 1</a></li>
-        <li class="right large_only"><a href="">Option 2</a></li>
-        <li class="right large_only"><a href="">Option 3</a></li>*/}
-
-        {/* Signup and Login appear when user is logged in, logout appears when user is logged into the program */}
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton edge="start" color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Button color="inherit" component={Link} to="/">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/about">
+            About
+          </Button>
+          <Button color="inherit" onClick={handleSurveyClick}>
+            Survey
+          </Button>
+        </Typography>
         {user ? (
           <>
-            <li className='right'>
-              <button className='logoutButton' onClick={handleLogout}>Logout</button>
-            </li>
+            <Button color="inherit" component={Link} to="/dashboard">
+              Profile
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
           </>
         ) : (
           <>
-            <li className="right"><Link to="/signup">Sign Up</Link></li>
-            <li className="right"><Link to="/login">Login</Link></li>
+            <Button color="inherit" component={Link} to="/signup">
+              Sign Up
+            </Button>
+            <Button color="inherit" component={Link} to="/login">
+              Login
+            </Button>
           </>
         )}
-      </ul>
-    </div>
+      </Toolbar>
+    </AppBar>
   );
 };
 
 export default Header;
+

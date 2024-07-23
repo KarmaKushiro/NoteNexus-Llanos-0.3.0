@@ -4,10 +4,11 @@ import Main from "./Components/Main/Main.js";
 import About from "./Components/About.js";
 import Login from './Components/Authorization/Login/login.js';
 import SignUp from "./Components/Authorization/SignUp/signup.js";
-//new component 
+//new component(s)
 import ForgotPassword from "./Components/Authorization/ForgotPassword/forgotpassword.js"
+import Dashboard from "./Components/UserDashboard/dashboard.js";
 
-import Survey from "./Components/Survey/sampleSurvey.js";
+import Survey from "./Components/Survey/fullSurvey.js";
 import { ProtectedRoute } from "./Services/protectedRoute.js";
 import * as Env from "./environments.js";
 import Parse from "parse";
@@ -36,7 +37,8 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<AuthRedirectRoute element={<SignUp />} />} />
             <Route path="/login" element={<AuthRedirectRoute element={<Login />} />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </div>
       </Router>

@@ -1,8 +1,34 @@
 import React, { useState } from 'react';
+import Parse from 'parse';
+import { useAuth } from '../Authorization/authContext';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+} from '@mui/material';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const Survey = ({ onFormSubmit }) => {
+const theme = createTheme();
+
+const Survey = () => {
+  const { user } = useAuth();
   const [selectedOption, setSelectedOption] = useState("Pop");
   const [customGenre, setCustomGenre] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const handleRadioChange = (event) => {
     setSelectedOption(event.target.value);
@@ -15,77 +41,110 @@ const Survey = ({ onFormSubmit }) => {
     setCustomGenre(event.target.value);
   };
 
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      alert('You must be logged in to submit the survey.');
+      return;
+    }
+
+    const Survey = Parse.Object.extend('Survey');
+    const survey = new Survey();
+
+    survey.set('fav_music_genre', selectedOption);
+    survey.set("custom_genre", selectedOption === 'Other' ? customGenre : selectedOption);
+    survey.set('name', name);
+    survey.set('user', user);
+
+    try {
+      await survey.save();
+      alert('Survey submitted successfully!');
+      setSelectedOption('Pop');
+      setCustomGenre('');
+      setName('');
+      setError('');
+    } catch (error) {
+      console.error('Error submitting survey:', error);
+      setError('Failed to submit survey. Please try again.');
+    }
+  };
+
   return (
-    <div>
-      <p>What is your favorite genre of music?</p>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <MusicNoteIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Survey
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <FormControl component="fieldset" fullWidth margin="normal">
+              <FormLabel component="legend">What is your favorite genre of music?</FormLabel>
+              <RadioGroup value={selectedOption} onChange={handleRadioChange}>
+                <FormControlLabel value="Pop" control={<Radio />} label="Pop" />
+                <FormControlLabel value="Rock" control={<Radio />} label="Rock" />
+                <FormControlLabel value="Hip Hop" control={<Radio />} label="Hip Hop" />
+                <FormControlLabel value="Other" control={<Radio />} label="Other" />
+              </RadioGroup>
+              {selectedOption === "Other" && (
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="custom_genre"
+                  label="Please specify genre"
+                  name="custom_genre"
+                  autoFocus
+                  value={customGenre}
+                  onChange={handleTextChange}
+                  required
+                />
+              )}
+            </FormControl>
 
-      {/* form that allows user to select one of four music choices */}
-      <form id="survey" action="" method="get" onSubmit={onFormSubmit}>
-        <input
-          type="radio"
-          id="pop"
-          name="fav_music_genre"
-          value="Pop"
-          checked={selectedOption === "Pop"}
-          onChange={handleRadioChange}
-        />
-        <label htmlFor="pop">Pop</label><br />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="What is your name?"
+              name="name"
+              value={name}
+              onChange={handleNameChange}
+            />
 
-        <input
-          type="radio"
-          id="rock"
-          name="fav_music_genre"
-          value="Rock"
-          checked={selectedOption === "Rock"}
-          onChange={handleRadioChange}
-        />
-        <label htmlFor="rock">Rock</label><br />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
 
-        <input
-          type="radio"
-          id="hiphop"
-          name="fav_music_genre"
-          value="Hip Hop"
-          checked={selectedOption === "Hip Hop"}
-          onChange={handleRadioChange}
-        />
-        <label htmlFor="hiphop">Hip Hop</label><br />
-
-        <input
-          type="radio"
-          id="other"
-          name="fav_music_genre"
-          value="Other"
-          checked={selectedOption === "Other"}
-          onChange={handleRadioChange}
-        />
-        <label htmlFor="other">Other</label><br />
-
-        <input
-          type="text"
-          name="custom_genre"
-          value={customGenre}
-          onInput={handleTextChange}
-          placeholder="Please specify genre..."
-          disabled={selectedOption !== "Other"}
-          required
-        />
-
-        <br /><br />
-
-        {/* Form allows user to enter their name */}
-        <p>What is your name?</p>
-        <input
-          autoComplete='on'
-          name="name"
-          type="text"
-          placeholder="Enter name here..."
-          required
-        />
-
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+            {error && (
+              <Typography color="error" variant="body2" align="center">
+                {error}
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
 
