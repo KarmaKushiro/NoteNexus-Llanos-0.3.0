@@ -12,21 +12,30 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
+        // Fetch who the user is
         const query = new Parse.Query(Parse.User);
         const currentUser = await query.get(user.id);
-        setUserInfo({
+        setUserInfo({ // displays the user's information
           email: currentUser.get('email'),
           name: `${currentUser.get('firstName')} ${currentUser.get('lastName')}`,
           createdAt: currentUser.createdAt.toDateString(),
         });
 
-        const Survey = Parse.Object.extend('Survey');
-        const surveyQuery = new Parse.Query(Survey);
-        surveyQuery.equalTo('user', currentUser);
-        const results = await surveyQuery.find();
-        setSurveyInputs(results.map(result => result.get('input')));
+        const favMusicGenre = currentUser.get('fav_music_genre');
+        const customGenre = currentUser.get('custom_genre');
+        
+        // List of Responses
+        const inputs = [];
+        if (favMusicGenre) {
+            inputs.push('Favorite Music Genre: ${favMusicGenre}');
+        }
+        if (customGenre && favMusicGenre === 'Other') {
+            inputs.push('Favorite Music Genre(custom): ${customGenre}');
+        }
+
+        setSurveyInputs(inputs);
       } catch (error) {
-        console.error('Error fetching user info:', error);
+        console.error('Error fetching user info: ', error);
       }
     };
 
@@ -55,11 +64,15 @@ const Dashboard = () => {
         Survey Inputs
       </Typography>
       <List>
-        {surveyInputs.map((input, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={input} />
-          </ListItem>
-        ))}
+        {surveyInputs.length > 0 ? (
+          surveyInputs.map((input, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={input} />
+            </ListItem>
+          ))
+        ) : (
+          <Typography>No survey inputs found.</Typography>
+        )}
       </List>
     </Container>
   );

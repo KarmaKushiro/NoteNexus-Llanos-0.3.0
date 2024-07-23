@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import Parse from 'parse';
 import { useAuth } from '../Authorization/authContext';
-import {
-  Avatar,
+
+// Material UI 
+import { Avatar,
   Button,
   CssBaseline,
   TextField,
   FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
   Box,
   Typography,
   Container,
@@ -52,16 +50,24 @@ const Survey = () => {
       return;
     }
 
-    const Survey = Parse.Object.extend('Survey');
-    const survey = new Survey();
-
-    survey.set('fav_music_genre', selectedOption);
-    survey.set("custom_genre", selectedOption === 'Other' ? customGenre : selectedOption);
-    survey.set('name', name);
-    survey.set('user', user);
-
     try {
-      await survey.save();
+      const currentUser = Parse.User.current();
+      // checks if current user is available
+      if (!currentUser) {
+        setError('Failed to get current user.');
+        return;
+      }
+
+      // Update List
+      currentUser.set('fav_music_genre', selectedOption);
+      if (selectedOption === 'Other') {
+        currentUser.set('custom_genre', customGenre);
+      } else {
+        currentUser.unset('custom_genre'); // clears the value if it can't do it
+      }
+
+      // Verify Save of Responses
+      await currentUser.save();
       alert('Survey submitted successfully!');
       setSelectedOption('Pop');
       setCustomGenre('');
