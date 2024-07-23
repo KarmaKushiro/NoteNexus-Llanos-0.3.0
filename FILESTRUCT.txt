@@ -5,14 +5,13 @@ notenexus/
 ├── src/
 │   ├── Components/
 │   │   ├── Authorization/
+│   │   │   ├── ForgotPassword/
+│   │   │   │   ├── ForgotPassword.js
 │   │   │   ├── Login/
-│   │   │   │   ├── login.css
 │   │   │   │   ├── login.js
-│   │   │   │   ├── login.html
 │   │   │   ├── SignUp/
-│   │   │   │   ├── signup.css
 │   │   │   │   ├── signup.js
-│   │   │   │   ├── signup.html
+│   │   │   ├── authContext.js
 │   │   ├── Header/
 │   │   │   ├── Header.js
 │   │   │   ├── Header.css
@@ -21,15 +20,35 @@ notenexus/
 │   │   │   ├── MainList.js
 │   │   │   ├── Main.css
 │   │   ├── Survey/
-│   │   │   ├── Survey.js
+│   │   │   ├── fullSurvey.js
+│   │   │   ├── sampleSurvey.js
+│   │   ├── UserDashboard/
+│   │   │   ├── dashboard.js
+│   │   │   ├── dashboard.css
+│   ├── About.js
+│   ├── Components.js
+│   ├── GenresList.js
+│   ├── SongsList.js
 │   ├── Services/
 │   │   ├── genreModel.js
 │   │   ├── songModel.js
+│   │   ├── protectedRoute.js
 │   │   ├── Users.js
 │   │   ├── users.json
 │   ├── App.css
 │   ├── App.js
+│   ├── App.test.js
 │   ├── index.js
 │   ├── index.css
 │   ├── environments.js
+│   ├── reportWebVitals.js
 ├── package.json
+├── package-lock.json
+├── .gitignore
+├── CHANGELOG.md
+├── README.txt
+├── UML Diagram.png
+
+
+
+

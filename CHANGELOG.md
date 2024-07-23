@@ -1,4 +1,9 @@
 # Changelog
+## [0.4.0] - 07-23-2024 - feature 6
+### Added (JP)
+- Created `dashboard.js` which allows the user basic access to a dashboard with details on them
+- Added Material UI library to update and stylize the header and app as a whole
+
 ## [0.3.0] - 07-10-2024 - feature 5
 ### Added
 - Created `ProtectedRoute.js` which protects the use of the full Survey 
