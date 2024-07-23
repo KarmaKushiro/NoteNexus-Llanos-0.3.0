@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { Login } from '@mui/icons-material';
 
 
 function Copyright(props) {
@@ -38,7 +39,8 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLasttName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   //handles form when user hits the sighup button
@@ -59,6 +61,7 @@ const SignUp = () => {
       window.location.reload(); // Refreshes the page
     } catch (error) {
       console.error('Error signing up:', error);
+      setError('Error signing up: ' + error.message);
       }
     };
 

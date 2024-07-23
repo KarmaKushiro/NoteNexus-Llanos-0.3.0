@@ -4,6 +4,9 @@ import Main from "./Components/Main/Main.js";
 import About from "./Components/About.js";
 import Login from './Components/Authorization/Login/login.js';
 import SignUp from "./Components/Authorization/SignUp/signup.js";
+//new component 
+import ForgotPassword from "./Components/Authorization/ForgotPassword/forgotpassword.js"
+
 import Survey from "./Components/Survey/sampleSurvey.js";
 import { ProtectedRoute } from "./Services/protectedRoute.js";
 import * as Env from "./environments.js";
@@ -25,7 +28,7 @@ const App = () => {
       <Router>
         <div className="App">
           <Header />
-          {/* routing, including secured when not logged in and redirecy once away from signup and login once a person is logged in */}
+          {/* routing, including secured when not logged in and redirects once away from signup and login once a person is logged in */}
           {/* connects to Header.js */}
           <Routes>
             <Route path="/" element={<Main />} />
@@ -33,6 +36,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<AuthRedirectRoute element={<SignUp />} />} />
             <Route path="/login" element={<AuthRedirectRoute element={<Login />} />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
           </Routes>
         </div>
       </Router>

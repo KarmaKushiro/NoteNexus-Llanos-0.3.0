@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Parse from 'parse';
 
@@ -37,9 +37,19 @@ const defaultTheme = createTheme();
 const Login = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   
+  // will remember the user by retrieving the local data of their input in login
+  useEffect(() => {
+  const rememberMeValue = localStorage.getItem('rememberMe') === 'true';
+  if (rememberMeValue) {
+    setId(localStorage.getItem('email') || localStorage.getItem('username') || '');
+    setPassword(localStorage.getItem('password') || '');
+    setRememberMe(true);
+  }
+  }, []);
 
   //handles the login form
   const handleLogin = async (e) => {
@@ -58,6 +68,20 @@ const Login = () => {
         await Parse.User.logIn(user.get('username'), password);
         console.log('User logged in successfully:', user);
         setError('');
+
+        // If rememberMe is true then the values are pre-filled, and local data is removed if not
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('username', user.get('username'));
+          localStorage.setItem('email', user.get('email'));
+          localStorage.setItem('password', password);
+        } else {
+          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('username');
+          localStorage.removeItem('email');
+          localStorage.removeItem('password');
+        }
+
         // Redirect or show a success message
         navigate('/survey');
         window.location.reload();
@@ -68,6 +92,10 @@ const Login = () => {
       console.error('Error logging in:', error);
       setError('Invalid username or password.')
       }
+    };
+    
+    const handleRememberMeChange = (event) => {
+      setRememberMe(event.target.checked);
     };
 
   //returns login form
@@ -94,11 +122,13 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="id"
+              label="Username or Email"
+              name="id"
+              autoComplete="usernmae"
               autoFocus
+              value={id}
+              onChange={(e) => setId(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -109,11 +139,15 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox checked={rememberMe} onChange={handleRememberMeChange} color="primary" />}
               label="Remember me"
             />
+            
             <Button
               type="submit"
               fullWidth
@@ -124,16 +158,21 @@ const Login = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/forgot-password" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
+            {error && (
+              <Typography color="error" variant='body2' align='center'>
+                {error}
+              </Typography>
+            )}
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
