@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Parse from 'parse';
 
 // From Material UI 
@@ -14,8 +14,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { Login } from '@mui/icons-material';
+import { useAuth } from '../authContext';
 
 
 function Copyright(props) {
@@ -42,6 +42,7 @@ const SignUp = () => {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   //handles form when user hits the sighup button
   const handleSignUp = async (e) => {
@@ -53,12 +54,12 @@ const SignUp = () => {
     user.set('firstName', firstName);
     user.set('lastName', lastName);
     try {
-      const result = await user.signUp();
-      console.log('User signed up successfully:', result);
-      await Parse.User.logIn(username, password); 
+      await user.signUp();
+      console.log('User signed up successfully');
+      const loggedIn = await Parse.User.logIn(username, password); 
+      setUser(loggedIn);
       // Redirect user to survey
       navigate('/survey');
-      window.location.reload(); // Refreshes the page
     } catch (error) {
       console.error('Error signing up:', error);
       setError('Error signing up: ' + error.message);
@@ -152,6 +153,11 @@ const SignUp = () => {
                 />
               </Grid>
             </Grid>
+            {error && (
+              <Typography color="error" variant="body2" align='center'>
+                {error}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth

@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  //does logn 
+  //does login 
   const login = async (username, password) => {
     try {
       const user = await Parse.User.logIn(username, password);
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signUp }}>
+    <AuthContext.Provider value={{ user, login, logout, signUp, setUser }}>
       {children}
     </AuthContext.Provider>
   );
